@@ -290,7 +290,7 @@ export class Connection {
 		self._session_close_message = null;
 
 		self._transport.onopen = function () {
-			log.debug(`${self._transport.info.type} transport open`);
+			log.debug(`${self._transport.info.type} transport open`, self._options);
 
 			// reset auto-reconnect timer and tracking
 			self._autoreconnect_reset();
@@ -299,7 +299,7 @@ export class Connection {
 			self._connect_successes += 1;
 
 			// start WAMP session
-			self._session.join(self._options.realm, self._options.authmethods, self._options.authid);
+			self._session.join(self._options.realm, self._options.authmethods, self._options.authid, self._options.authextra);
 		};
 
 		self._session.onjoin = function (details) {
