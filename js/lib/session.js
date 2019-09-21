@@ -1057,7 +1057,10 @@ export class Session {
 		}
 	}
 
-	join(realm, authmethods, authid) {
+	/**
+	 * @note: (George Lee Patterson) Updated to include auth extras.
+	 */
+	join(realm, authmethods, authid, authextra=null) {
 		util.assert(typeof realm === 'string', "Session.join: <realm> must be a string");
 		util.assert(!authmethods || Array.isArray(authmethods), "Session.join: <authmethods> must be an array []");
 		util.assert(!authid || typeof authid === 'string', "Session.join: <authid> must be a string");
@@ -1080,8 +1083,17 @@ export class Session {
 		if (authid) {
 			details.authid = authid;
 		}
+		if (authextra) {
+			details.authextra = authextra;
+		}
 
 		var msg = [MSG_TYPE.HELLO, realm, details];
+
+		/**
+		 * @note: (George Lee Patterson)
+		 */
+		log.debug("[session.join] sending message", msg);
+		
 		self._send_wamp(msg);
 	}
 
